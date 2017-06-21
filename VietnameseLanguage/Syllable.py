@@ -49,7 +49,82 @@ LOWER_VLETTER_LIST = LOWER_CONSONANT_VLETTER_LIST + LOWER_VOWEL_VLETTER_LIST
 
 VLETTER_LIST = UPPER_VLETTER_LIST + LOWER_VLETTER_LIST
 
-def ToLower(vletter):
+def areCompatibleAccents(accent1, accent2):
+    """
+        Kiểm tra hai thanh điệu cùng bằng hoặc cùng trắc, trả lại True nếu cùng loại và False nếu khác loại hoặc vô định
+    """
+    type1 = 0
+    type2 = 0
+    if accent1 in "zf":
+        type1 = 1
+    elif accent1 in "srxj":
+        type1 = 2
+    if accent2 in "zf":
+        type2 = 1
+    elif accent2 in "srxj":
+        type2 = 2
+    return (type1 != 0 and type2 != 0 and type1 == type2)
+
+def areQuasiRhymable(rhyme1, rhyme2):
+    """
+        Kiểm tra 2 vần có được xem là gần vần với nhau hay không.
+        Dưới đây liệt kê các trường hợp được coi là gần vần
+        Đây là hàm phụ, sẽ được sử dụng cho areRhymable(syllable1, syllable2)
+    """
+    b1, c1 = rhyme1[1], rhyme1[2]
+    b2, c2 = rhyme2[1], rhyme2[2]
+    if c1 in ['n', 'ng'] and c2 in ['n', 'ng'] and b1 in ['a', 'ă', 'â', 'e', 'iê', 'uô', 'ươ'] and b2 == b1:
+        return True
+    elif c1 in ['t', 'c'] and c2 in ['t', 'c'] and b1 in ['a', 'ă', 'â', 'e', 'ư', 'iê', 'uô', 'ươ'] and b2 == b1:
+        return True
+    elif c1 in ['n', 'nh'] and c2 in ['n', 'nh'] and b1 in ['ê', 'i'] and b2 == b1:
+        return True
+    elif c1 in ['t', 'ch'] and c2 in ['t', 'ch'] and b1 in ['ê', 'i'] and b2 == b1:
+        return True
+    elif c1 == 'u' and c2 == 'u':
+        if b1 in ['a', 'ă', 'â'] and b2 in ['a', 'ă', 'â']:
+            return True
+        elif b1 in ['e', 'ê'] and b2 in ['e', 'ê']:
+            return True
+        elif b1 in ['ê', 'i', 'iê'] and b2 in ['ê', 'i', 'iê']:
+            return True
+        elif b1 in ['ư', 'ươ'] and b2 in ['ư', 'ươ']:
+            return True
+    elif c1 == 'i' and c2 == 'i':
+        if b1 in ['a', 'ă', 'â'] and b2 in ['a', 'ă', 'â']:
+            return True
+        elif b1 in ['o', 'ô', 'ơ'] and b2 in ['o', 'ô', 'ơ']:
+            return True
+        elif b1 in ['u', 'uô'] and b2 in ['u', 'uô']:
+            return True
+        elif b1 in ['ơ', 'ư', 'ươ'] and b2 in ['ơ', 'ư', 'ươ']:
+            return True
+    return False
+
+def areRhymable(syllable1, syllable2):
+    """
+        Kiểm tra hai tiếng vần tuyệt đối với nhau, trả lại 
+        0 nếu không hề vần
+        1 nếu vần tuyệt đối
+        2 nếu vần chỉ sai khác âm đệm
+        3 nếu vần theo phương ngữ Nam
+    """
+    analysis1 = SplitSyllableToParts(syllable1)
+    rhyme1, accent1 = analysis1[1], analysis1[2]
+    analysis2 = SplitSyllableToParts(syllable2)
+    rhyme2, accent2 = analysis2[1], analysis2[2]
+    if rhyme1 == rhyme2 and areCompatibleAccents(accent1, accent2):
+        return 1
+    elif rhyme1[1] == rhyme2[1] and rhyme1[2] == rhyme2[2] and areCompatibleAccents(accent1, accent2):
+        return 2
+    elif areQuasiRhymable(rhyme1, rhyme2) and areCompatibleAccents(accent1, accent2):
+        return 3
+    return 0
+    
+def ToLowerVLetter(vletter):
+    """
+        Chuyển chữ cái thành in thường
+    """
     if vletter in CONSONANT_VLETTER_DICTIONARY:
         return CONSONANT_VLETTER_DICTIONARY[vletter]
     elif vletter in VOWEL_VLETTER_DICTIONARY:
@@ -68,11 +143,11 @@ def SplitSyllableToVLetters(syllable):
     while (current_position != syllable_length):
         for i in range (min(3, syllable_length - current_position), 0, -1):
             if (syllable[current_position : current_position + i] in VLETTER_LIST):
-                composed_vletters.append(ToLower(syllable[current_position : current_position + i]))
+                composed_vletters.append(ToLowerVLetter(syllable[current_position : current_position + i]))
                 current_position += i
                 break
             if i==1:
-                composed_vletters.append(ToLower(syllable[current_position]))
+                composed_vletters.append(ToLowerVLetter(syllable[current_position]))
                 current_position += 1
     return composed_vletters
 
@@ -117,6 +192,7 @@ def SplitRhymeToSmallParts(rhyme):
     primary_part = ""
     end_part = ""
     if rhyme.startswith("oa") or rhyme.startswith("oe") or rhyme.startswith("ua") or rhyme.startswith("ue") \
+        or rhyme.startswith("oă") or rhyme.startswith("uă") or rhyme.startswith("uâ")\
         or rhyme.startswith("uê") or rhyme.startswith("uy") or rhyme.startswith("uơ"):
             rhyme = rhyme[1:]
             secondary_part = "u"
@@ -142,4 +218,4 @@ def SplitRhymeToSmallParts(rhyme):
     primary_part = primary_part.replace("y", "i").replace("ia", "iê").replace("ua", "uô").replace("ưa", "ươ")
     return secondary_part, primary_part, end_part
 
-print SplitSyllableToParts("cày")
+print areRhymable("ba", "a")
