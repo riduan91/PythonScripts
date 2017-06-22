@@ -12,10 +12,18 @@ class Word:
     def __init__(self, word):
         self.word = word
         self.splitWordToSyllables()
+        self.checkPureVietnameseWord()
     
     def splitWordToSyllables(self):
-        self.raw_syllables = re.split('[ |\-|_]+', self.word)
+        self.raw_syllables = re.split('[ ]+', self.word)
         self.syllables = [Syllable(syllable) for syllable in self.raw_syllables]
+    
+    def checkPureVietnameseWord(self):
+        self.pure_Vietnamese = True
+        for syllable in self.syllables:
+            if not syllable.isPureVietnameseSyllable():
+                self.pure_Vietnamese = False
+                break
     
     def getWord(self):
         return self.word
@@ -31,6 +39,6 @@ class Word:
     
     def getLength(self):
         return len(self.syllables)
-
-word1 = Word("nhà Trắng")
-print word1.getSyllables()[0].getRhyme().getPrimaryPart()
+    
+    def isPureVietnameseWord(self):
+        return self.pure_Vietnamese

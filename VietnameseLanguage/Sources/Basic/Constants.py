@@ -37,6 +37,16 @@ TAKE_ACCENT_FROM_VLETTER = {
 GI_INCOMPATIBLE = ["a", "ă", "â", "e", "o", "ô", "ơ", "u", "ư"]
 
 GI_COMPATIBLE = ["i", "ê"]
+
+V_PURE_CONSONANTS = ["b", "c", "ch", "d", "đ", "g", "gi", "h", "l", "m", "n", "ng", "nh", "ph", "r", "s", "t", "th", "tr", "v", "x"]
+
+V_PURE_PRIMARY_PARTS = ["a", "ă", "â", "e", "ê", "i", "o", "ô", "ơ", "u", "ư", "iê", "uô", "ươ"]
+
+V_PURE_SECONDARY_PARTS = ["u"]
+
+V_PURE_END_PARTS = ["n", "t", "ng", "c", "m", "p", "nh", "ch", "i", "u"]
+
+V_PURE_ACCENTS = ["z", "f", "s", "r", "x", "j"]
                               
 UPPER_CONSONANT_VLETTER_LIST = CONSONANT_VLETTER_DICTIONARY.keys()
 UPPER_VOWEL_VLETTER_LIST = VOWEL_VLETTER_DICTIONARY.keys()

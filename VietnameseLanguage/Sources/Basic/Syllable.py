@@ -14,6 +14,7 @@ class Syllable:
     def __init__(self, syllable):
         self.syllable = syllable
         self.SplitSyllableToParts()
+        self.checkPureVietnameseSyllable()
     
     def SplitSyllableToParts(self):
         """
@@ -111,6 +112,23 @@ class Syllable:
         # Xử lí nguyên âm đôi: đưa ia về iê trong trường hợp không có âm cuối; tương tự với ua -> uô, ưa -> ươ, thống nhất cách viết y thành i
         primary_part = primary_part.replace("y", "i").replace("ia", "iê").replace("ua", "uô").replace("ưa", "ươ")
         self.rhyme = Rhyme(secondary_part, primary_part, end_part)
+        
+    def checkPureVietnameseSyllable(self):
+        self.pure_Vietnamese = True
+        if self.beginning_consonant != "" and self.beginning_consonant not in Constants.V_PURE_CONSONANTS:
+            self.pure_Vietnamese = False
+        else:
+            rhyme = self.rhyme
+            if rhyme.secondary_part != "" and rhyme.secondary_part not in Constants.V_PURE_SECONDARY_PARTS:
+                self.pure_Vietnamese = False
+            elif rhyme.primary_part not in Constants.V_PURE_PRIMARY_PARTS:
+                self.pure_Vietnamese = False
+            elif rhyme.end_part != "" and rhyme.end_part not in Constants.V_PURE_END_PARTS:
+                self.pure_Vietnamese = False
+            elif self.accent not in Constants.V_PURE_ACCENTS:
+                self.pure_Vietnamese = False
+            elif rhyme.end_part in ["c", "t", "p", "ch"] and self.accent in ["z", "f", "r", "x"]:
+                self.pure_Vietnamese = False
     
     def getSyllable(self):
         return self.syllable
@@ -137,6 +155,9 @@ class Syllable:
     def getTechnicalLength(self):
         return len(self.syllable)
     
+    def isPureVietnameseSyllable(self):
+        return self.pure_Vietnamese
+    
     def isRhymable(self, AnotherSyllable):
         """
             Kiểm tra hai tiếng vần tuyệt đối với nhau, trả lại 
@@ -155,5 +176,3 @@ class Syllable:
         elif rhyme1.isQuasiRhymable(rhyme2) and areCompatibleAccents(accent1, accent2):
             return 3
         return 0
-        
-
