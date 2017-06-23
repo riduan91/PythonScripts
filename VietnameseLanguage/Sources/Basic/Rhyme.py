@@ -5,8 +5,6 @@ Created on Wed Jun 21 17:38:57 2017
 @author: ndoannguyen
 """
 
-import Constants
-
 class Rhyme:
     def __init__(self, secondary_part, primary_part, end_part):
         self.secondary_part = secondary_part

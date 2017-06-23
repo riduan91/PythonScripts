@@ -37,6 +37,9 @@ def findQuasiRhymableWords(word, limit = -1):
         return None
     return quasi_rhymable_words_cursor
 
-word = Word("phương ngữ")
-for another_word in findQuasiRhymableWords(word, 21):
-    print another_word["word"]
+word = Word("chưởng")
+try:
+    for another_word in findQuasiRhymableWords(word, 21):
+        print another_word["word"]
+except TypeError:
+    pass
