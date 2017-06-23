@@ -71,6 +71,7 @@ class Syllable:
                     composed_vletters.append(ToLowerVLetter(syllable[current_position]))
                     current_position += 1
         self.composed_vletters = composed_vletters 
+        self.syllable = "".join(composed_vletters)
         
     def SplitRhymeToSmallParts(self):
         """
@@ -168,10 +169,9 @@ class Syllable:
         """
         rhyme1, accent1 = self.getRhyme(), self.getAccent()
         rhyme2, accent2 = AnotherSyllable.getRhyme(), AnotherSyllable.getAccent()
-        if rhyme1.getSecondaryPart() == rhyme2.getSecondaryPart() and rhyme1.getPrimaryPart() == rhyme2.getPrimaryPart() \
-            and rhyme1.getEndPart() == rhyme2.getEndPart() and areCompatibleAccents(accent1, accent2):
+        if rhyme1.isTotallyRhymable(rhyme2) and areCompatibleAccents(accent1, accent2):
             return 1
-        elif rhyme1.getPrimaryPart() == rhyme2.getPrimaryPart() and rhyme1.getEndPart() == rhyme2.getEndPart() and areCompatibleAccents(accent1, accent2):
+        elif rhyme1.isRhymableWithoutSecondaryPart(rhyme2) and areCompatibleAccents(accent1, accent2):
             return 2
         elif rhyme1.isQuasiRhymable(rhyme2) and areCompatibleAccents(accent1, accent2):
             return 3
