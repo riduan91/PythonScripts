@@ -66,6 +66,8 @@ class Rhyme:
                 return True
             if b1 in ['ơ', 'ươ'] and b2 in ['ơ', 'ươ']:
                 return True
+            if b1 in ['uô', 'ươ'] and b2 in ['uô', 'ươ']:
+                return True
         return False
         
     def isTotallyRhymable(self, AnotherRhyme):
