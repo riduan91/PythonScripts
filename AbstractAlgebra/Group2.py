@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 """
+Created on Sat Jul 08 15:34:29 2017
+
+@author: ndoannguyen
+"""
+
+# -*- coding: utf-8 -*-
+"""
 Created on Mon Jul 03 10:41:28 2017
 
 @author: ndoannguyen
@@ -102,8 +109,11 @@ class GroupByGeneratorsAndRelations():
         #We want to facilitate the substitution in element simplification later, so we try to generate as many relations as possible
         #That's why we define self.generalized relations here.
               
+        self.equality_classes = []
+        self.to_class = {}
         self.generalized_relations = []
         self._generalizeRelations()
+        
         
         #Store the variables in another way, {x1:x, x2:y, x3:z, e:e} instead of {x:x1, y:x2, z:x3, e:e}
         self.reversed_generators = {}
@@ -111,6 +121,8 @@ class GroupByGeneratorsAndRelations():
             self.reversed_generators[self.generators[generator]] = generator
         
         self.commutative = self._checkCommutative()
+        
+
         self.all_elements = self._listAllElements()
         self.all_elements_as_string = [self._elementToElementString(element) for element in self.all_elements]
         
@@ -121,12 +133,8 @@ class GroupByGeneratorsAndRelations():
         print time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime())
         print self.description()
         
-        #print self.generalized_relations
 
     def _generalizeRelations(self):
-        self._generalizeRelationsWithAlgo2()
-    
-    def _generalizeRelationsWithAlgo1(self):
         for i in range(1, self.nb_generators + 1):
             # Firstly, find all relations of the form x * inverse(x) = e
             self.generalized_relations.append([i, self._index_of_inverse(i)])
@@ -200,10 +208,7 @@ class GroupByGeneratorsAndRelations():
                                         relations_type_2.append(new_relation)
        
         self.generalized_relations += relations_type_2   
-    
-    def _generalizeRelationsWithAlgo2(self):
-        self._generalizeRelationsWithAlgo1()       
-        
+
         relations_type_3 = []
         for relation in self.relations:
             if len(relation) == 1 and relation[0][1] == 2:
@@ -218,9 +223,49 @@ class GroupByGeneratorsAndRelations():
                             new_another_relation[idx] = x
                     if new_another_relation not in self.generalized_relations and new_another_relation not in relations_type_3:
                         relations_type_3.append(new_another_relation)
-        self.generalized_relations += relations_type_3
-                        
+        self.generalized_relations += relations_type_3        
+        
+        self.to_class[to_string([])] = 0
+        self.equality_classes.append([])
+        self.equality_classes[0].append([])
     
+        for relation in self.generalized_relations:
+            
+            for i in range(len(reformulated_relation), -1, -1):
+                for j in range (0, len(reformulated_relation) - i):
+                    sequence = reformulated_relation[j : j + i + 1]
+                    remaining = remaining_of_list_after_removing(sequence, reformulated_relation, j)
+                    transformed_sequence = self._inverse(remaining[0]) + self._inverse(remaining[1])
+                    if to_string(sequence) not in self.to_class.keys():
+                        if to_string(transformed_sequence) not in self.to_class.keys():
+                            self.create_new_class(transformed_sequence)               
+                        self.join_class(sequence, transformed_sequence)
+                    else:
+                        if to_string(transformed_sequence) not in self.to_class.keys():
+                            self.join_class(transformed_sequence, sequence)
+                        else:
+                            self.update_equalitiy_classes(transformed_sequence, sequence)
+    
+    def create_new_class(self, element):
+         self.to_class[to_string(element)] = len(self.equality_classes)
+         self.equality_classes.append([element])       
+
+    def join_class(self, element, another_element):
+        self.to_class[to_string(element)] = self.to_class[to_string(another_element)]
+        self.equality_classes[self.to_class[to_string(another_element)]].append(element)
+        self.equality_classes[self.to_class[to_string(another_element)]] = sorted(self.equality_classes[self.to_class[to_string(another_element)]], key = lambda x: (len(x), str(x)))
+    
+    def update_equalitiy_classes(self, element, another_element):
+        m1, m2 = self.to_class[to_string(element)], self.to_class[to_string(another_element)], 
+        if m1 != m2:
+            m = min(m1, m2)
+            M = max(m1, m2)
+            for element in self.equality_classes[M]:
+                self.to_class[to_string(element)] = m
+            self.equality_classes[m] += self.equality_classes[M]
+            self.equality_classes[M] = []
+            self.equality_classes[m] = sorted(self.equality_classes[m], key = lambda x: (len(x), str(x)))
+
     
     def description(self, style="simplified"):
         """
@@ -267,90 +312,41 @@ class GroupByGeneratorsAndRelations():
         else:
             return index_of_generator - self.nb_generators 
     
+    def _getClass(self, element):
+        return self.equality_classes[self.to_class[to_string(element)]]
+    
     def _simplify(self, element):
-        transformed_element = element
-        transformed_element = self._simplifyWithAlgo1(element)
-
-        return transformed_element
-    
-    def _simplifyWithAlgo1(self, element):
-        """
-            Find the simplest form of an element. For example, for the group of 1 generator x1 and 1 relation x1^5=0, [1,1,1,1] will return [3]
-            This works with element in list form.
-        """
-        #If element is [1,2,3], element_sublists will be [[1,2,3], [1,2], [2,3], [1], [2], [3]]
-        if element == []:
-            return []
-        
-        element_sublists = sublists(element)
-        transformed_element = element
-        
-        for sequence in element_sublists:
-            #Sequence is an element of sublists, is sth like [1,2,3] or [1,2]
-            transformed_sequence = self._shortenSequence(sequence)
-            #After this step, if there are some relation like [1,2,1] = [] then [1,2] will be replaced by [4]
-            if transformed_sequence != sequence:
-                position = position_of_list_in_list(sequence, element)
-                transformed_element = element[:position] + transformed_sequence + element[position + len(sequence):]
-                #It will be then substituted in [1,2,3], this latter become [4,3]
-                break
-            
-        if transformed_element != element:
-            #Recurse this step to have a shorter form
-            element = transformed_element
-            return self._simplify(transformed_element)
-            
-        if len(element) <= self.nb_terms_in_simplest_form:
-            #Stop if the simplified form is already short enough
-            return element
-        
-        # When nothing changes, return the last form
-        return element
-    
-    def _simplifyWithAlgo2(self, element):
-        """
-            Find the simplest form of an element. For example, for the group of 1 generator x1 and 1 relation x1^5=0, [1,1,1,1] will return [3]
-            This works with element in list form.
-        """
-        #If element is [1,2,3], element_sublists will be [[1,2,3], [1,2], [2,3], [1], [2], [3]]
-        if element == []:
-            return []
-        
-        element_sublists = sublists(element)
-        transformed_element = element
-
-        for sequence in element_sublists:
-            #If it is not the case, realize the step above with stronger transformation, i.e, substitute with longer sequence
-            transformed_sequence = self._shortenSequence(sequence)
-            
-            if transformed_sequence != sequence:
-                transformed_sequence = self._shortenSequenceWithAlgo1(sequence)
-            
-            if transformed_sequence != sequence:
-                position = position_of_list_in_list(sequence, element)
-                transformed_element = element[:position] + transformed_sequence + element[position + len(sequence):]
-                break
-        
-        if transformed_element != element:
-            element = transformed_element
-            return self._simplify(transformed_element)
+        print "element", element
+        if to_string(element) in self.to_class.keys():
+            return self._getClass(element)[0]
         
         if len(element) <= self.nb_terms_in_simplest_form:
-            #Stop if the simplified form is already short enough
+            self.create_new_class(element)
             return element
+           
+        transformed_element = copy.copy(element)
+        for i in range(len(transformed_element), -1, -1):        
+            for j in range (0, len(transformed_element) - i):
+                sequence = transformed_element[j : j + i + 1]
+                print "sequence", sequence
+                if to_string(sequence) not in self.to_class.keys():
+                    continue
         
-        # When nothing changes, return the last form
-        return element
-    
-    def _strongSimplify(self, element):
-        element = self._simplify(element)
-        
-        if len(self.all_elements) > 0:
-            for group_element in self.all_elements:
-                if self._areEqual(element, group_element):
-                    return group_element
-        
-        return element
+                for replacement in self._getClass(sequence):
+                    if len(replacement) > len(sequence):
+                        continue
+                
+                    transformed_element = element[:j] + replacement + element[j + i + 1:]
+                    print "transformed_element", transformed_element
+                
+                    simplified_transformed_element = self._simplify(transformed_element)
+                    print simplified_transformed_element
+                
+                    if simplified_transformed_element in self.to_class.keys():
+                        self.join_class(element, simplified_transformed_element)
+                        return self._getClass(simplified_transformed_element)[0]
+                        
+            return element
     
     def simplify(self, element):
         """
@@ -359,7 +355,7 @@ class GroupByGeneratorsAndRelations():
         """
         if len(self.all_elements) > 0:
             return self._elementToElementString(self._strongSimplify(self.elementStringToElement(element)))
-        return self._simplify(element)
+        return self._elementToElementString(self._simplify(self.elementStringToElement(element)))
     
     def _multiply(self, element1, element2):
         """
@@ -617,9 +613,9 @@ class GroupByGeneratorsAndRelations():
             row = []
             for idx2 in range(self.order):
                 if self.commutative:
-                    row += [self._strongSimplify(self._sortElementInCommutativeGroup(self._multiply(self.all_elements[idx1], self.all_elements[idx2])))]
+                    row += [self._simplify(self._sortElementInCommutativeGroup(self._multiply(self.all_elements[idx1], self.all_elements[idx2])))]
                 else:
-                    row += [self._strongSimplify(self._multiply(self.all_elements[idx1], self.all_elements[idx2]))]
+                    row += [self._simplify(self._multiply(self.all_elements[idx1], self.all_elements[idx2]))]
             multi_tab += [row]
         return multi_tab
     
@@ -634,7 +630,7 @@ groups = {}
 
 #GROUPS OF ORDER 2
 groups["02 - Z/2Z"] = GroupByGeneratorsAndRelations('Z/2Z', 1, ["x^2=e"], nb_terms_in_simplest_form = 1)
-
+"""
 #GROUPS OF ORDER 3
 groups["03 - Z/3Z"] = GroupByGeneratorsAndRelations('Z/3Z', 1, ["x^3=e"], nb_terms_in_simplest_form = 1)
 
@@ -694,3 +690,4 @@ groups["15 - Z/15Z"] = GroupByGeneratorsAndRelations('Z/15Z', 1, ["x^15=e"], nb_
 groups["16 - Z/16Z"] = GroupByGeneratorsAndRelations('Z/16Z', 1, ["x^16=e"], nb_terms_in_simplest_form = 8)
 groups["16 - Z/4Z x Z/4Z"] = GroupByGeneratorsAndRelations('Z/4Z x Z/4Z', 2, ["x^4=e", "y^4=e", "x*y*x^-1*y^-1=e"], nb_terms_in_simplest_form = 4)
 groups["16 - Z/4Z x Z/2Z x Z/2Z"] = GroupByGeneratorsAndRelations('Z/4Z x Z/2Z x Z/2Z', 3, ["x^4=e", "y^2=e", "z^2=e", "x*y*x^-1*y^-1=e", "y*z*y^-1*z^-1=e", "z*x*z^-1*x^-1=e"], nb_terms_in_simplest_form = 4)
+"""

@@ -4,7 +4,7 @@ Created on Mon Jul 03 12:17:21 2017
 
 @author: ndoannguyen
 """
-import itertools
+import itertools, re
 
 def list_to_string(mylist):
     mylist = [str(item) for item in mylist]
@@ -46,7 +46,8 @@ def sublists(mylist):
     res = []
     for i in range(len(mylist), -1, -1):
         for j in range (0, len(mylist) - i):
-            res.append(mylist[j : j + i + 1])
+            if mylist[j : j + i + 1] not in res:
+                res.append(mylist[j : j + i + 1])
     return res
 
 def all_subsets(S):
@@ -54,3 +55,7 @@ def all_subsets(S):
     for l in range(len(S) + 1):
         subsets += list(itertools.combinations(S, l))
     return subsets
+
+def to_string(mylist):
+    return str(mylist)
+    
