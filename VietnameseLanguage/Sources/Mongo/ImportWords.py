@@ -6,6 +6,10 @@ Created on Fri Jun 23 10:59:17 2017
 2 mins to run
 """
 
+"""
+This import words from frequency file into mongo
+"""
+
 BASIC_SOURCE_DIR = "D:/Userfiles/ndoannguyen/Documents/Python Scripts/VietnameseLanguage/Sources/Basic/"
 
 import sys
@@ -24,11 +28,13 @@ RhymeCollection = VietnameseDB['Rhymes']
 
 BASIC_DATA_DIR = Constants.BASIC_DATA_DIR
 PURE_VNESE_WORDS_FILE_NAME = Constants.PURE_VNESE_WORDS_FILE_NAME
+FREQUENCY_OF_WORD_FILE_NAME = Constants.FREQUENCY_OF_WORD_FILE_NAME
 
 index = 1
-for line in open(BASIC_DATA_DIR + PURE_VNESE_WORDS_FILE_NAME):
+for line in open(BASIC_DATA_DIR + FREQUENCY_OF_WORD_FILE_NAME):
     line = line.replace("\n", "")
-    word = Word(line)
+    word_fred = line.split("\t")
+    word, fred = Word(word_fred[0]), int(word_fred[1])
     quasi_rhymable_rhymes = RhymeCollection.find_one({"rhyme": word.getRhyme().getRhyme()})['quasi_rhymable_rhymes']
     
     accent_type = 1
@@ -44,7 +50,7 @@ for line in open(BASIC_DATA_DIR + PURE_VNESE_WORDS_FILE_NAME):
                         "accent" : word.getAccent(),
                         "accent_type" : accent_type,
                         "quasi_rhymable_rhymes" : quasi_rhymable_rhymes,
-                        "popularity" : 0
+                        "popularity" : fred
                     }
     try:
         WordCollection.insert_one(word_mongo_document)

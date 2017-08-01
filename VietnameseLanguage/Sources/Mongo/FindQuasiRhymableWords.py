@@ -29,17 +29,17 @@ def findQuasiRhymableWords(word, limit = -1):
         quasi_rhymable_rhymes = corresponding_word["quasi_rhymable_rhymes"]
         accent_type = corresponding_word["accent_type"]
         if limit > 0:
-            quasi_rhymable_words_cursor = WordCollection.find({"$and": [{"rhyme": {"$in": quasi_rhymable_rhymes}}, {"accent_type": accent_type}]}).limit(limit)
+            quasi_rhymable_words_cursor = WordCollection.find({"$and": [{"rhyme": {"$in": quasi_rhymable_rhymes}}, {"accent_type": accent_type}, {"popularity": {"$lt": 1000}} ]}).sort("popularity", -1).limit(limit)
         else:
-            quasi_rhymable_words_cursor = WordCollection.find({"$and": [{"rhyme": {"$in": quasi_rhymable_rhymes}}, {"accent_type": accent_type}]})
+            quasi_rhymable_words_cursor = WordCollection.find({"$and": [{"rhyme": {"$in": quasi_rhymable_rhymes}}, {"accent_type": accent_type}, {"popularity": {"$lt": 1000}} ]}).sort("popularity", -1)
     except TypeError:
         print "[Error] Word \"%s\" not found in dictionary." % word.getWord()
         return None
     return quasi_rhymable_words_cursor
 
-word = Word("chưởng")
+word = Word("dở")
 try:
-    for another_word in findQuasiRhymableWords(word, 21):
-        print another_word["word"]
+    for another_word in findQuasiRhymableWords(word, 75):
+        print another_word["word"], "\t", another_word["popularity"]
 except TypeError:
     pass
