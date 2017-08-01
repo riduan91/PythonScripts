@@ -229,22 +229,25 @@ class GroupByGeneratorsAndRelations():
         self.equality_classes.append([])
         self.equality_classes[0].append([])
     
-        for relation in self.generalized_relations:
-            
+        for reformulated_relation in self.generalized_relations:      
             for i in range(len(reformulated_relation), -1, -1):
-                for j in range (0, len(reformulated_relation) - i):
+                for j in range (0, len(reformulated_relation) - i):                
                     sequence = reformulated_relation[j : j + i + 1]
+                    
                     remaining = remaining_of_list_after_removing(sequence, reformulated_relation, j)
                     transformed_sequence = self._inverse(remaining[0]) + self._inverse(remaining[1])
                     if to_string(sequence) not in self.to_class.keys():
                         if to_string(transformed_sequence) not in self.to_class.keys():
-                            self.create_new_class(transformed_sequence)               
-                        self.join_class(sequence, transformed_sequence)
+                            self.create_new_class(transformed_sequence)
+                        if sequence != transformed_sequence:
+                            self.join_class(sequence, transformed_sequence)
                     else:
                         if to_string(transformed_sequence) not in self.to_class.keys():
                             self.join_class(transformed_sequence, sequence)
                         else:
                             self.update_equalitiy_classes(transformed_sequence, sequence)
+        
+        print self.equality_classes
     
     def create_new_class(self, element):
          self.to_class[to_string(element)] = len(self.equality_classes)
@@ -315,46 +318,56 @@ class GroupByGeneratorsAndRelations():
     def _getClass(self, element):
         return self.equality_classes[self.to_class[to_string(element)]]
     
-    def _simplify(self, element):
-        print "element", element
+    def _simplify(self, element):      
+        
         if to_string(element) in self.to_class.keys():
+            self.visited.append(element)
             return self._getClass(element)[0]
         
         if len(element) <= self.nb_terms_in_simplest_form:
+            self.visited.append(element)
             self.create_new_class(element)
             return element
            
         transformed_element = copy.copy(element)
+
         for i in range(len(transformed_element), -1, -1):        
             for j in range (0, len(transformed_element) - i):
                 sequence = transformed_element[j : j + i + 1]
-                print "sequence", sequence
                 if to_string(sequence) not in self.to_class.keys():
                     continue
         
-                for replacement in self._getClass(sequence):
-                    if len(replacement) > len(sequence):
-                        continue
+                for replacement in self._getClass(sequence):                    
                 
                     transformed_element = element[:j] + replacement + element[j + i + 1:]
-                    print "transformed_element", transformed_element
-                
+                    if transformed_element in self.visited:
+                        print transformed_element, " visited"
+                        continue
+                    else:
+                        self.visited.append(transformed_element)
+                        
                     simplified_transformed_element = self._simplify(transformed_element)
-                    print simplified_transformed_element
+                    if simplified_transformed_element in self.visited:
+                        continue
+                    else:
+                        self.visited.append(transformed_element)
                 
                     if simplified_transformed_element in self.to_class.keys():
                         self.join_class(element, simplified_transformed_element)
                         return self._getClass(simplified_transformed_element)[0]
+        
+        if transformed_element != 
                         
-            return element
+        return element
     
     def simplify(self, element):
         """
             Find the simplest form of an element. For example, for the group of 1 generator x1 and 1 relation x1^5=0, x1^4 will return x1^-1
             This works with element in string form.
         """
-        if len(self.all_elements) > 0:
-            return self._elementToElementString(self._strongSimplify(self.elementStringToElement(element)))
+        #if len(self.all_elements) > 0:
+        #    return self._elementToElementString(self._strongSimplify(self.elementStringToElement(element)))
+        self.visited = []
         return self._elementToElementString(self._simplify(self.elementStringToElement(element)))
     
     def _multiply(self, element1, element2):
@@ -362,6 +375,11 @@ class GroupByGeneratorsAndRelations():
             Multiply to 2 elements of the group in list form. E.g, for the group of 1 generator x1 and 1 relation x1^5=0, multiplying [1,1,1] and [1,1] returns [].
             This works with elements in list form.
         """
+        self.visited = []
+        element1 = self._simplify(element1)
+        self.visited = []
+        element2 = self._simplify(element2)
+        self.visited = []
         return self._simplify(element1 + element2)
     
     def multiply(self, element1, element2):
@@ -369,7 +387,11 @@ class GroupByGeneratorsAndRelations():
             Multiply to 2 elements of the group in list form. E.g, for the group of 1 generator x1 and 1 relation x1^5=0, multiplying x1^3 and x1^2 returns e.
             This works with elements in string form.
         """
-        return self._elementToElementString(self._multiply(self._simplify(self.elementStringToElement(element1)), self._simplify(self.elementStringToElement(element2))))
+        element1 = self.simplify(element1)
+        self.visited = []
+        element2 = self.simplify(element2)
+        self.visited = []
+        return self.simplify(self.elementStringToElement(element1) + self.elementStringToElement(element2))
         
     def _power(self, element, exponent):
         """
@@ -393,6 +415,7 @@ class GroupByGeneratorsAndRelations():
         """
             Check if an element (in list form) is neutral.
         """
+        self.visited = []
         return self._simplify(element) == []
     
     def isNeutral(self, element):
@@ -630,14 +653,17 @@ groups = {}
 
 #GROUPS OF ORDER 2
 groups["02 - Z/2Z"] = GroupByGeneratorsAndRelations('Z/2Z', 1, ["x^2=e"], nb_terms_in_simplest_form = 1)
-"""
+
+
 #GROUPS OF ORDER 3
 groups["03 - Z/3Z"] = GroupByGeneratorsAndRelations('Z/3Z', 1, ["x^3=e"], nb_terms_in_simplest_form = 1)
+
 
 #GROUPS OF ORDER 4
 groups["04 - Z/4Z"] = GroupByGeneratorsAndRelations('Z/4Z', 1, ["x^4=e"], nb_terms_in_simplest_form = 2)
 groups["04 - Z/2Z x Z/2Z"] = GroupByGeneratorsAndRelations('Z/2Z x Z/2Z', 2, ["x^2=e", "y^2=e", "x*y*x^-1*y^-1=e"], nb_terms_in_simplest_form = 2)
 
+"""
 #GROUPS OF ORDER 5
 groups["05 - Z/5Z"] = GroupByGeneratorsAndRelations('Z/5Z', 1, ["x^5=e"], nb_terms_in_simplest_form = 2)
 

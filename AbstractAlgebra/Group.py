@@ -110,10 +110,14 @@ class GroupByGeneratorsAndRelations():
         for generator in self.generators.keys():
             self.reversed_generators[self.generators[generator]] = generator
         
+        #Check commutativity
         self.commutative = self._checkCommutative()
+        
+        #Find all elements of the group
         self.all_elements = self._listAllElements()
         self.all_elements_as_string = [self._elementToElementString(element) for element in self.all_elements]
         
+        #Create multiplication
         self.order = len(self.all_elements)
         self.multiplication_table = self._createMultiplicationTable()
         self.multiplication_table_as_string = self.createMultiplicationTable()
@@ -202,6 +206,7 @@ class GroupByGeneratorsAndRelations():
         self.generalized_relations += relations_type_2   
     
     def _generalizeRelationsWithAlgo2(self):
+        # Replace inverse in relation of type x^2=e
         self._generalizeRelationsWithAlgo1()       
         
         relations_type_3 = []
@@ -497,6 +502,9 @@ class GroupByGeneratorsAndRelations():
         return expression
     
     def _elementToElementString(self, element):
+        """
+            [1,2,1] -> x*y*x
+        """
         element_string = ""
         pairs = []
         if len(element) > 0:
@@ -525,6 +533,9 @@ class GroupByGeneratorsAndRelations():
         return element_string
 
     def retrieveVariablesFromExpression(self, expression):
+        """
+            x*y=e -> {"x":x1, "y":x2}
+        """
         regex = re.compile('[^a-zA-Z]')
         simplified_expression = regex.sub('', expression)
         variables = set(list(simplified_expression))
@@ -540,13 +551,13 @@ class GroupByGeneratorsAndRelations():
                     
         expression = expression.replace("$", "x")
         return expression
-    
+
     def retrieveVariablesFromElement(self, element):
         regex = re.compile('[^a-zA-Z]')
         simplified_element = regex.sub('', element)
         variables = set(list(simplified_element))
         return sorted(list(variables))
-    
+
     def _listElementsOfLength(self, length):
         all_classes = []
         if length==0:
@@ -631,7 +642,7 @@ class GroupByGeneratorsAndRelations():
 #------------------------MAIN-------------------------
 
 groups = {}
-
+"""
 #GROUPS OF ORDER 2
 groups["02 - Z/2Z"] = GroupByGeneratorsAndRelations('Z/2Z', 1, ["x^2=e"], nb_terms_in_simplest_form = 1)
 
@@ -651,7 +662,6 @@ groups["06 - D3"] = GroupByGeneratorsAndRelations('D3', 2, ["x^2=e", "y^3=e", "x
 
 #GROUPS OF ORDER 7
 groups["07 - Z/7Z"] = GroupByGeneratorsAndRelations('Z/7Z', 1, ["x^7=e"], nb_terms_in_simplest_form = 3)
-
 
 #GROUPS OF ORDER 8
 groups["08 - Z/8Z"] = GroupByGeneratorsAndRelations('Z/8Z', 1, ["x^8=e"], nb_terms_in_simplest_form = 4)
@@ -684,7 +694,7 @@ groups["13 - Z/13Z"] = GroupByGeneratorsAndRelations('Z/13Z', 1, ["x^13=e"], nb_
 
 #GROUP OF ORDER 14
 groups["14 - Z/14Z"] = GroupByGeneratorsAndRelations('Z/14Z', 1, ["x^14=e"], nb_terms_in_simplest_form = 7)
-groups["14 - Z/14Z"] = GroupByGeneratorsAndRelations('D7', 2, ["x^2=e", "y^7=e", "x*y*x*y=e"], nb_terms_in_simplest_form = 7)
+groups["14 - Z/14Z"] = GroupByGeneratorsAndRelations('D7', 2, ["x^2=e", "y^7=e", "x*y*x*y=e"], nb_terms_in_simplest_form = 4)
 
 #GROUP OF ORDER 15
 groups["15 - Z/15Z"] = GroupByGeneratorsAndRelations('Z/15Z', 1, ["x^15=e"], nb_terms_in_simplest_form = 7)
@@ -694,3 +704,6 @@ groups["15 - Z/15Z"] = GroupByGeneratorsAndRelations('Z/15Z', 1, ["x^15=e"], nb_
 groups["16 - Z/16Z"] = GroupByGeneratorsAndRelations('Z/16Z', 1, ["x^16=e"], nb_terms_in_simplest_form = 8)
 groups["16 - Z/4Z x Z/4Z"] = GroupByGeneratorsAndRelations('Z/4Z x Z/4Z', 2, ["x^4=e", "y^4=e", "x*y*x^-1*y^-1=e"], nb_terms_in_simplest_form = 4)
 groups["16 - Z/4Z x Z/2Z x Z/2Z"] = GroupByGeneratorsAndRelations('Z/4Z x Z/2Z x Z/2Z', 3, ["x^4=e", "y^2=e", "z^2=e", "x*y*x^-1*y^-1=e", "y*z*y^-1*z^-1=e", "z*x*z^-1*x^-1=e"], nb_terms_in_simplest_form = 4)
+groups["16 - D8"] = GroupByGeneratorsAndRelations('D8', 2, ["x^2=e", "y^8=e", "x*y*x*y=e"], nb_terms_in_simplest_form = 5)
+"""
+groups["16 - Q16"] = GroupByGeneratorsAndRelations('Q16', 2, ["x^8=e", "x^3*y^-1*x^-1*y^-1=e", "x*y*x*y^-1=e", "x^4*y^-2=e"], nb_terms_in_simplest_form = 5)

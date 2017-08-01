@@ -30,6 +30,7 @@ for line in open(raw_words_text_file):
             pure_vnese_syllable_collection[syllable_text] = 1
 
 pure_vnese_syllables_text_file = open(BASIC_DATA_DIR + PURE_VNESE_SYLLABLES_FILE_NAME, 'w')
+print BASIC_DATA_DIR + PURE_VNESE_SYLLABLES_FILE_NAME
 for word in sorted(pure_vnese_syllable_collection.keys()):
     pure_vnese_syllables_text_file.write(word + "\n")
 
