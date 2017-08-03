@@ -1,0 +1,46 @@
+<html>
+   <head>
+        <title>Biểu diễn bậc trong module</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href = "{{ url_for('static', filename = 'main.css') }}" />
+        <script type = "text/javascript" src = "{{ url_for('static', filename = 'hello.js') }}" ></script>
+   </head>
+   
+   <body>
+        <h1>Bigraded modules and actions</h1>
+
+        <form action = "http://localhost:8801/describe_module" method = "POST">
+            <h2>Please describe your bigraded algebra</h2>
+            <p>All the generators (each of which is a single letter). E.g: x, y, z
+                <input type = "text" name = "alg_generators"  />
+            </p>
+            <p>Their bidegree. E.g: (1, 2), (2, 1), (0, 3)
+                <input type = "text" name = "alg_bidegrees" />
+            </p>
+            
+            <p>The relations (we only deal with relations of kind x^m*y^n*z = 0). E.g: x^3=0,x*y^4=0
+                <input type = "text" name = "alg_relations"  />
+            </p>
+            
+            <h2>Please describe your bigraded module</h2>
+            <p>All the generators. E.g: a, b, c, d 
+                <input type = "text" name = "mod_generators" />
+            </p>
+            
+            <p>Their bidegree. E.g: (0, 0), (2, 0), (0, 2), (1, 1)
+                <input type = "text" name = "mod_bidegrees" />
+            </p>
+
+            <h2>Describe the multiplicative actions</h2>
+            <p>All the actions. E.g: x, x*y, y^2 
+                <input type = "text" name = "actions" /></p>
+
+            <h2>Limit your bidegree</h2>
+            <p>For the first coordinate (m). Please begin with a small m to estimate time consumption. <input type = "number" name = "limit_x"  /></p>
+            <p>For the second coordinate (n). Please begin with a small n to estimate time consumption. <input type = "number" name = "limit_y"  /></p>
+            <p><input type = "submit" value = "Submit. It may take time." /></p>
+        </form>
+
+    </body>
+</html>

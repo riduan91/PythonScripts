@@ -10,6 +10,7 @@ from ParseExpression import MyBigradedAlgebra, MyFreeBigradedModuleOverAlgebra
 from PlotBidegreeTable import writeToTex
 
 def process(mymod, actions, outputfile, limit_x=5, limit_y=5):
+    myalg = mymod.myalg
     print "Algebra of generators %s of degree %s and relations %s" % (", ".join(myalg.variables),  ", ".join(map(str, myalg.alg.bidegrees)), ", ".join(myalg.relation_strings))
     if len(myalg.variables) <= 1 or myalg.alg.commutative:
         print "It is commutative"
@@ -32,16 +33,16 @@ def process(mymod, actions, outputfile, limit_x=5, limit_y=5):
     print "limit", limit
         
     source_bidegrees = mymod.mod.possibleBidegreesOfLimit(limit)
-    writeToTex(mymod, source_bidegrees, actions, limit_x, limit_y, outputfile)
     
     print "-------------------------------------------------"
-
+    return writeToTex(mymod, source_bidegrees, actions, limit_x, limit_y, outputfile)
 
 #TEST1
-
+"""
 t0 = time.time()
 myalg = MyBigradedAlgebra(["x", "y", "z", "t"], [(20, 4), (24, 0), (3, 1), (-24, 0)], ["z^3=0"], True)
 mymod = MyFreeBigradedModuleOverAlgebra(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'], [(0, 0), (5, 1), (6, 0), (11, 1), (12, 0), (17, 1), (18, 0), (23, 1)], myalg)
 actions = [ "z", "x*z*t" ]
 process(mymod, actions, 'output.tex', 48, 24)
 print "Process takes %.2f seconds" % (time.time() - t0)
+"""

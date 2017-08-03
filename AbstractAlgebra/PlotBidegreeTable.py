@@ -60,23 +60,23 @@ def writeToTex(mymod, source_bidegrees, actions, max_x, max_y, outputfile):
     f.write("\\begin{document}\n")
     """
     
-    f.write("\\begin{figure}\n")
-    f.write("\\begin{tikzpicture}[scale=0.8]")
-    f.write("\clip(-1.5,-1.5) rectangle (%.1f,%.1f);\n" % (max_x + 0.5, max_y + 0.5)) 
+    s = "\\begin{figure}\n"
+    s += "\\begin{tikzpicture}[scale=0.8]"
+    s += "\clip(-1.5,-1.5) rectangle (%.1f,%.1f);\n" % (max_x + 0.5, max_y + 0.5)
     
-    f.write("\draw[color=gray] (0,0) grid [step=1] (%d , %d);\n" % (max_x, max_y))
+    s += "\draw[color=gray] (0,0) grid [step=1] (%d , %d);\n" % (max_x, max_y)
     
-    f.write("\\foreach \\n in {0,1,...,%d}\n" % max_x)
-    f.write("{\n")
-    f.write("\def\\nn{\\n-0}\n")
-    f.write("\\node[below] at (\\nn,0) {$\\n$};\n")
-    f.write("}\n")
+    s += "\\foreach \\n in {0,1,...,%d}\n" % max_x
+    s += "{\n"
+    s += "\def\\nn{\\n-0}\n"
+    s += "\\node[below] at (\\nn,0) {$\\n$};\n"
+    s += "}\n"
     
-    f.write("\\foreach \s in {0,1,...,%d}\n" % max_y)
-    f.write("{\n")
-    f.write("\def\ss{\s-0}\n")
-    f.write("\\node[left] at (-0.4,\ss,0){$\s$};\n")
-    f.write("}\n")
+    s += "\\foreach \s in {0,1,...,%d}\n" % max_y
+    s += "{\n"
+    s += "\def\ss{\s-0}\n"
+    s += "\\node[left] at (-0.4,\ss,0){$\s$};\n"
+    s += "}\n"
     
     index = 0
     
@@ -86,7 +86,7 @@ def writeToTex(mymod, source_bidegrees, actions, max_x, max_y, outputfile):
         y = [term[0][1] for term in connection_table if term[0][1] > -999] + [term[1][1] for term in connection_table if term[1][1] > -999]  
         for (term1, term2) in connection_table:
             if term1[0] >= 0 and term1[1] >= 0 and term2[0] >= 0 and term2[1] >= 0 and term1[0] <= max_x and term1[1] <= max_y and term2[0] <= max_x and term2[1] <= max_y:
-                f.write("\draw [->, %s] (%d, %d)--(%d, %d);\n" % (COL[index % len(COL)], term1[0], term1[1], term2[0], term2[1]))        
+                s += "\draw [->, %s] (%d, %d)--(%d, %d);\n" % (COL[index % len(COL)], term1[0], term1[1], term2[0], term2[1])      
         
         index += 1
         
@@ -94,9 +94,12 @@ def writeToTex(mymod, source_bidegrees, actions, max_x, max_y, outputfile):
     listxy = list(setxy)
     
     for (x, y) in listxy:
-        f.write("\draw [fill] (%d, %d) circle [radius = 0.1]; \n" % (x, y));
+        s += "\draw [fill] (%d, %d) circle [radius = 0.1]; \n" % (x, y);
     
-    f.write("\end{tikzpicture}\n")
-    f.write("\end{figure}\n")
+    s += "\end{tikzpicture}\n"
+    s += "\end{figure}\n"
+    
+    f.write(s)
     
     f.close()
+    return s

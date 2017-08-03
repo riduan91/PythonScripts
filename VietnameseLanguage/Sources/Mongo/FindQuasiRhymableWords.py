@@ -20,10 +20,11 @@ WordCollection = VietnameseDB['Words']
 RhymeCollection = VietnameseDB['Rhymes']
 
 
-def findQuasiRhymableWords(word, limit = -1):
+def findQuasiRhymableWords(word, collection_name, limit = -1):
     """
         Trả lại một MongoCursor
     """
+    WordCollection = VietnameseDB[collection_name]
     try:
         corresponding_word = WordCollection.find_one({"word": word.getWord()})
         quasi_rhymable_rhymes = corresponding_word["quasi_rhymable_rhymes"]
@@ -36,10 +37,3 @@ def findQuasiRhymableWords(word, limit = -1):
         print "[Error] Word \"%s\" not found in dictionary." % word.getWord()
         return None
     return quasi_rhymable_words_cursor
-
-word = Word("dở")
-try:
-    for another_word in findQuasiRhymableWords(word, 75):
-        print another_word["word"], "\t", another_word["popularity"]
-except TypeError:
-    pass

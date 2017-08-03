@@ -153,7 +153,7 @@ def make_words_frequency_corpus(source_file, destination_file, data_file, dictio
 
 #-------MAIN-------
 
-
+"""
 dates = [20170717]
 dates_from = [1500242400]
 dates_end = [1500325944]
@@ -169,3 +169,6 @@ for i in range(len(dates_from)):
 
 for i in range(len(dates_from)):
     make_words_frequency_corpus("Statistics_12-1607.txt", "Statistics_12-1707.txt", "sentences_%d.txt" % dates[i], "AllPureVietnameseWords.txt")
+"""
+
+make_words_frequency_corpus("Statistics_Null.txt", "Statistics_TruyenKieu.txt", "TruyenKieu.txt", "AllPureVietnameseWords.txt")

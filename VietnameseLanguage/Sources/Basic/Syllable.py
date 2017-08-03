@@ -46,11 +46,13 @@ class Syllable:
                     rhyme = rhyme[1:]
                     break
     
-        beginning_consonant = beginning_consonant.replace("k", "c").replace("q", "c").replace("gh", "g").replace("ngh", "ng")
         self.beginning_consonant = beginning_consonant
         self.raw_rhyme = rhyme
         self.accent = accent
         self.SplitRhymeToSmallParts()
+        
+        beginning_consonant = beginning_consonant.replace("k", "c").replace("q", "c").replace("gh", "g").replace("ngh", "ng")
+      
     
     def SplitSyllableToVLetters(self):
         """
@@ -82,7 +84,7 @@ class Syllable:
         primary_part = ""
         end_part = ""
         # Xử lí âm đệm: âm đệm chỉ có thể là o hoặc u và đứng trước các nguyên âm như dưới đây
-        if rhyme.startswith("oa") or rhyme.startswith("oe") or rhyme.startswith("ua") or rhyme.startswith("ue") \
+        if rhyme.startswith("oa") or rhyme.startswith("oe") or (rhyme.startswith("ua") and self.beginning_consonant =='q') or rhyme.startswith("ue") \
             or rhyme.startswith("oă") or rhyme.startswith("uă") or rhyme.startswith("uâ")\
             or rhyme.startswith("uê") or rhyme.startswith("uy") or rhyme.startswith("uơ"):
                 rhyme = rhyme[1:]
