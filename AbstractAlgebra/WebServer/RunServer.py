@@ -34,7 +34,6 @@ def describe_module():
         p = multiprocessing.Process(target = describe_module_core, args = (parameters, result_queue))
         p.start()
         try:
-            print "Trying"
             s = result_queue.get(True, TIMEOUT)
         except:
             s = "Timeout. Please choose smaller m, n."
