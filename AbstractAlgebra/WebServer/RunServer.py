@@ -20,7 +20,7 @@ from ParseExpression import MyBigradedAlgebra, MyFreeBigradedModuleOverAlgebra
 from Test import process
 import multiprocessing
 
-TIMEOUT = 60
+TIMEOUT = 30
 
 @app.route("/")
 def app1():
