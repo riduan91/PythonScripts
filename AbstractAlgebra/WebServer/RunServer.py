@@ -79,4 +79,4 @@ def describe_module_core(parameters, result_queue):
     
 port = 8801
 if __name__ == '__main__':
-    app.run(port = 8801, debug=True)
+    app.run(host = '0.0.0.0', port = 8801, debug=True)
