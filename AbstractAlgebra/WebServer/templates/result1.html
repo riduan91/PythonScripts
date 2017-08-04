@@ -9,7 +9,7 @@
     <body>
     <h1>Bigraded modules and actions</h1>
  
-        <form action = "http://localhost:8801/describe_module" method = "POST">
+        <form action = "describe_module" method = "POST">
             <h2>Please describe your bigraded algebra</h2>
             <p>All the generators (each of which is a single letter). E.g: x, y, z
                 <input type = "text" name = "alg_generators" value = "{{ result[0]['alg_generators'] }}" />
@@ -41,7 +41,7 @@
             <p><input type = "submit" value = "Submit. It may take time." /></p>
         </form>
 
-        <p>
+        <p style="background-color:powderblue; ">
         {% for s in result[1] %}
         {{ s }}
         <br/>
