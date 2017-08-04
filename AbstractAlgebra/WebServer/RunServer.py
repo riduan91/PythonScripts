@@ -18,9 +18,9 @@ import sys
 sys.path.append(BASIC_SOURCE_DIR)
 from ParseExpression import MyBigradedAlgebra, MyFreeBigradedModuleOverAlgebra
 from Test import process
-import multiprocessing
+import multiprocessing, time
 
-TIMEOUT = 30
+TIMEOUT = 20
 
 @app.route("/")
 def app1():
@@ -33,17 +33,16 @@ def describe_module():
         result_queue = multiprocessing.Queue()
         p = multiprocessing.Process(target = describe_module_core, args = (parameters, result_queue))
         p.start()
-        
+        s = result_queue.get()
         p.join(TIMEOUT)
+
         if p.is_alive():
+            print "Still alive"
             s = "Timeout. Please choose smaller m, n."
             p.terminate()
-            p.join()
+            print p.is_alive() 
+            p.join() 
         
-        else:
-            p.join()
-            s = result_queue.get()
-            
         return render_template("result1.html", result = (parameters, s.split("\n")))
 
     else:
@@ -76,7 +75,7 @@ def describe_module_core(parameters, result_queue):
         
     s = process(mod, actions, "output.txt", int(limit_x), int(limit_y))
     result_queue.put(s)
-    
+ 
 port = 8801
 if __name__ == '__main__':
     app.run(host = '0.0.0.0', port = 8801, debug=True)
