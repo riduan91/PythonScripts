@@ -18,7 +18,7 @@ import sys
 sys.path.append(BASIC_SOURCE_DIR)
 from ParseExpression import MyBigradedAlgebra, MyFreeBigradedModuleOverAlgebra
 from Test import process
-import multiprocessing, time
+import multiprocessing
 
 TIMEOUT = 20
 

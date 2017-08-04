@@ -5,47 +5,8 @@ Created on Wed Jul 26 11:15:34 2017
 @author: ndoannguyen
 """
 
-import numpy as np
-
 REDUCTION = 0
 COL = ['red', 'blue', 'green', 'orange', 'black']
-
-"""
-def plotAction(mymod, source_bidegrees, actions, rank, max_x, max_y):
-         
-    ax = plt.gca()
-    ax.set_autoscale_on(False)
-    ax.set_xticks(np.arange(0, max_x + 2, 1))
-    ax.set_yticks(np.arange(0, max_y + 2, 1))
-    
-
-    index = 0
-    for action in actions:
-        connection_table = mymod.findConnectionsByActionWithLimit(source_bidegrees, action, abs(max_x) + abs(max_y))
-        x = [term[0][0] + 0.5 for term in connection_table if term[0][0] > -999] + [term[1][0] + 0.5 for term in connection_table if term[1][0] > -999]
-        y = [term[0][1] + 0.5 for term in connection_table if term[0][1] > -999] + [term[1][1] + 0.5 for term in connection_table if term[1][1] > -999]  
-               
-            
-        new_con_tab = [(term[0][0] + 0.5, term[0][1] + 0.5, term[1][0] + 0.5, term[1][1] + 0.5) for term in connection_table if term[1][0] >= 0 and term[1][1] >= 0 ]    
-
-
-        for (x1, y1, x2, y2) in new_con_tab:
-            
-            if (x1 == x2):
-                r1 = 0
-            else:
-                r1 = REDUCTION
-            if (y1 == y2):
-                r2 = 0
-            else:
-                r2 = REDUCTION
-                ax.arrow(x1 + r1 , y1 + r2, x2 - x1 - 2 * r1, y2 - y1 - 2 * r2, head_width = 0.15, head_length = 0.15, color = COL[index % len(COL)])
-        index += 1
-    
-        plt.scatter(x, y, marker='x', s = 32, color = 'red') 
-    plt.grid()
-    plt.show()
-"""
 
 def writeToTex(mymod, source_bidegrees, actions, max_x, max_y, outputfile):
     
