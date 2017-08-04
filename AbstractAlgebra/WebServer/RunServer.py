@@ -33,15 +33,14 @@ def describe_module():
         result_queue = multiprocessing.Queue()
         p = multiprocessing.Process(target = describe_module_core, args = (parameters, result_queue))
         p.start()
-        s = result_queue.get()
-        p.join(TIMEOUT)
-
-        if p.is_alive():
-            print "Still alive"
+        try:
+            print "Trying"
+            s = result_queue.get(True, TIMEOUT)
+        except:
             s = "Timeout. Please choose smaller m, n."
             p.terminate()
-            print p.is_alive() 
-            p.join() 
+            p.join()
+        #p.join(TIMEOUT)
         
         return render_template("result1.html", result = (parameters, s.split("\n")))
 
