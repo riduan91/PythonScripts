@@ -5,12 +5,12 @@ Created on Wed Jul 26 11:15:34 2017
 @author: ndoannguyen
 """
 
-from matplotlib import pyplot as plt
 import numpy as np
 
 REDUCTION = 0
 COL = ['red', 'blue', 'green', 'orange', 'black']
 
+"""
 def plotAction(mymod, source_bidegrees, actions, rank, max_x, max_y):
          
     ax = plt.gca()
@@ -45,6 +45,7 @@ def plotAction(mymod, source_bidegrees, actions, rank, max_x, max_y):
         plt.scatter(x, y, marker='x', s = 32, color = 'red') 
     plt.grid()
     plt.show()
+"""
 
 def writeToTex(mymod, source_bidegrees, actions, max_x, max_y, outputfile):
     

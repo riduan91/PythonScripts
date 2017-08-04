@@ -12,7 +12,7 @@ Created on Wed Aug 02 18:21:07 2017
 from flask import Flask, render_template, request
 app = Flask(__name__)
 
-BASIC_SOURCE_DIR = "D:/Userfiles/ndoannguyen/Documents/Python Scripts/AbstractAlgebra"
+BASIC_SOURCE_DIR = "../"
 import sys
 
 sys.path.append(BASIC_SOURCE_DIR)
