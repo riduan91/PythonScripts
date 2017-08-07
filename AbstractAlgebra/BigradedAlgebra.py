@@ -15,6 +15,18 @@ def simplifyListByReplacing(list1, list2):
         if list1[i : i + len(list2)] == list2:
             return []
     return list1
+        
+def reducedForm(increasing_list):
+    if len(increasing_list) == 0:
+        return []
+    res = [(increasing_list[0], 1)]
+    for u in increasing_list[1:] :
+        if u == res[-1][0]:
+            res[-1] = (res[-1][0], res[-1][1] + 1)
+        else:
+            res.append((u, 1))
+    return res
+    
 
 def reorder(mylist):
     return sorted(mylist)
@@ -37,7 +49,7 @@ class BigradedAlgebra:
         if term[0] == 0:
             return (0, [])
         if self.commutative:
-            term = (term[0], reorder(term[1]))
+            term = (term[0], sorted(term[1]))
         for relation in self.relations:
             if self.simplifyTermBySimpleRelation(term, relation)[0] == 0:
                 return (0, [])
@@ -46,6 +58,9 @@ class BigradedAlgebra:
     
     def simplifyElement(self, element):
         #element is a list of term, like [ (3,[0,0,0,0,1,1]), (2,[1,1]), (-3, [0,0,0,0,1,1]), (-3,[1,1]), (1,[1,1]) ]
+        for i, term in enumerate(element):
+            element[i] = self.simplifyTerm(term)
+        
         element = sorted(element, key = lambda x : x[1])
         simplified_element = [element[0]]
         for term in element[1:]:
@@ -70,6 +85,18 @@ class BigradedAlgebra:
         #relation is a list
         i = 0
         product = term[1]
+        if self.commutative:
+            if len(relation) == 1:
+                isZero = True
+                new_product = reducedForm(sorted(relation[0][1]))
+                for occurence in new_product:
+                    if "-".join(map(str, [occurence[0]] * occurence[1])) not in "-".join(map(str, product)):
+                        isZero = False
+            if isZero:
+                return (0, [])
+            else:
+                return term
+            
         for i in range (len(product)):
             if len(relation) == 1 and product[i : i + len(relation[0][1])] == relation[0][1]:
                 return (0, [])

@@ -61,6 +61,7 @@ def writeToTex(mymod, source_bidegrees, actions, max_x, max_y, outputfile):
     s += "\end{tikzpicture}\n"
     s += "\end{figure}\n"
     
+    
     f.write(s)
     
     f.close()

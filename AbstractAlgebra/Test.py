@@ -24,7 +24,7 @@ def process(mymod, actions, outputfile, limit_x=5, limit_y=5):
     limit = [0] * alg.nb_generators
     for i in range(len(limit)):
         if alg.bidegrees[i][0] != 0 and alg.bidegrees[i][1] != 0:
-            limit[i] = 2 * max(abs(limit_x / alg.bidegrees[i][0]) + 1, abs(limit_y / alg.bidegrees[i][1]) + 1)
+            limit[i] = 2 * min(abs(limit_x / alg.bidegrees[i][0]) + 1, abs(limit_y / alg.bidegrees[i][1]) + 1)
         elif alg.bidegrees[i][0] != 0:
             limit[i] = 2 * abs(limit_x / alg.bidegrees[i][0]) + 1
         elif alg.bidegrees[i][1] != 0:
