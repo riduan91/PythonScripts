@@ -13,8 +13,8 @@ from pymongo.errors import DuplicateKeyError
 
 mongo_client = MongoClient('localhost', 27017)
 
-HistoryQCM = mongo_client['HistoryQCM']
-QuestionCollection = HistoryQCM['Questions']
+HistoryQCM = mongo_client[Constants.HISTORY_QCM_DATABASE]
+QuestionCollection = HistoryQCM[Constants.QUESTION_COLLECTION]
 
 all_questions = []
 
@@ -42,5 +42,5 @@ for question in all_questions:
         QuestionCollection.insert_one(rhyme_mongo_document)
         index += 1
     except DuplicateKeyError:
-        print "[Error] Question with id %s already exists." % (Constants.QUESTION_PREFIX + str(index).zfill(5))
+        print "[Error] Question with id %s already exists." % (Constants.QUESTION_PREFIX + str(index).zfill(6))
         index += 1
