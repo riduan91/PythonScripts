@@ -6,7 +6,9 @@
         <link rel="stylesheet" href = "{{ url_for('static', filename = 'main.css') }}" />
    </head>
    <body>
-        <h1>Ứng dụng trắc nghiệm lịch sử</h1>
+        <h1>Kết quả bài khảo sát</h1>
+        <h3 style="background-color:powderblue; ">Số câu trả lời đúng: {{ result[3] }} / {{ result[4] }} </h3>
+        <h3 style="background-color:powderblue; ">Điểm đánh giá: {{ result[3] / result[4] * 10 }} </h3>
  
         <form action = "answer" method = "POST">
             {% for i in result[0] %}
@@ -29,7 +31,6 @@
             <br/>
             {% endfor %}
             
-            <h3 style="background-color:powderblue; ">Điểm đánh giá: {{ result[3] / result[4] * 10 }} </h3>
         </form>
     </body>
 </html>
