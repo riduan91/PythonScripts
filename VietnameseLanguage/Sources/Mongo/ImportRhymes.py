@@ -27,7 +27,7 @@ all_rhymes = []
 
 reader = open(BASIC_DATA_DIR + RHYMES_FILE_NAME)
 for line in reader:
-    line = line.replace("\n", "").split("-")
+    line = line.replace("\n", "").replace("\r", "").split("-")
     rhyme = Rhyme(line[0], line[1], line[2])
     all_rhymes.append(rhyme)
 

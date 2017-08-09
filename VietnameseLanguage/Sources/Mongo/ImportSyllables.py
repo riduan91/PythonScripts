@@ -26,7 +26,7 @@ PURE_VNESE_SYLLABLES_FILE_NAME = Constants.PURE_VNESE_SYLLABLES_FILE_NAME
 index = 1
 
 for line in open(BASIC_DATA_DIR + PURE_VNESE_SYLLABLES_FILE_NAME):
-    line = line.replace("\n", "")
+    line = line.replace("\n", "").replace("\r", "")
     syllable = Syllable(line)
     mongo_document = {
                         "_id": "SYL" + str(index).zfill(5),

@@ -34,7 +34,7 @@ def ImportWords(frequency_file_name, word_collection_name):
     WordCollection = VietnameseDB[word_collection_name]
     index = 1
     for line in open(frequency_file_name):
-        line = line.replace("\n", "")
+        line = line.replace("\n", "").replace("\r", "")
         word_fred = line.split("\t")
         word, fred = Word(word_fred[0]), int(word_fred[1])
         quasi_rhymable_rhymes = RhymeCollection.find_one({"rhyme": word.getRhyme().getRhyme()})['quasi_rhymable_rhymes']
