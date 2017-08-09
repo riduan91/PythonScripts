@@ -36,4 +36,4 @@ def result():
     
 port = 8800
 if __name__ == '__main__':
-    app.run(port = 8800, debug=True)
+    app.run(host = '0.0.0.0', port = 8800, debug=True)
