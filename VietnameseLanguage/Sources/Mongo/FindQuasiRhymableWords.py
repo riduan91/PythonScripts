@@ -16,7 +16,7 @@ from pymongo import MongoClient
 mongo_client = MongoClient('localhost', 27017)
 
 VietnameseDB = mongo_client['Vietnamese']
-WordCollection = VietnameseDB['Words']
+DefaultWordCollection = VietnameseDB['Words']
 RhymeCollection = VietnameseDB['Rhymes']
 
 
@@ -26,7 +26,7 @@ def findQuasiRhymableWords(word, collection_name, limit = -1):
     """
     WordCollection = VietnameseDB[collection_name]
     try:
-        corresponding_word = WordCollection.find_one({"word": word.getWord()})
+        corresponding_word = DefaultWordCollection.find_one({"word": word.getWord()})
         quasi_rhymable_rhymes = corresponding_word["quasi_rhymable_rhymes"]
         accent_type = corresponding_word["accent_type"]
         if limit > 0:
