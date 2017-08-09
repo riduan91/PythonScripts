@@ -5,8 +5,8 @@ Created on Thu Jun 22 10:49:44 2017
 @author: ndoannguyen
 """
 
-BASIC_DATA_DIR = "D:/Userfiles/ndoannguyen/Documents/Python Scripts/VietnameseLanguage/BasicData/"
-BASIC_SOURCE_DIR = "D:/Userfiles/ndoannguyen/Documents/Python Scripts/VietnameseLanguage/Sources/Basic/"
+BASIC_DATA_DIR = "../../BasicData/"
+BASIC_SOURCE_DIR = "../Basic/"
 
 import sys
 sys.path.append(BASIC_SOURCE_DIR)

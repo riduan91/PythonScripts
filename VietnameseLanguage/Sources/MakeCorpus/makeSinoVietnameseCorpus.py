@@ -15,18 +15,18 @@ Created on Thu Jul 20 10:33:56 2017
 import re, requests, time, urllib
 from bs4 import BeautifulSoup
 
-BASIC_SOURCE_DIR = "D:/Userfiles/ndoannguyen/Documents/Python Scripts/VietnameseLanguage/Sources/Basic/"
+BASIC_SOURCE_DIR = "../Basic/"
 
 import sys
 sys.path.append(BASIC_SOURCE_DIR)
 
 from Word import Word
 
-WORD_FILE = "D:/Userfiles/ndoannguyen/Documents/Python Scripts/VietnameseLanguage/BasicData/AllPureVietnameseWords.txt"
-SYLLABLE_FILE = "D:/Userfiles/ndoannguyen/Documents/Python Scripts/VietnameseLanguage/BasicData/AllPureVietnameseSyllables.txt"
-SINO_VNESE_DICTIONARY_FILE = "D:/Userfiles/ndoannguyen/Documents/Python Scripts/VietnameseLanguage/BasicData/AllSinoVietnameseSyllablesWithMeaning.txt"
-SINO_VNESE_CHARACTER_FILE = "D:/Userfiles/ndoannguyen/Documents/Python Scripts/VietnameseLanguage/BasicData/AllSinoVietnameseSyllables.txt"
-SINO_VNESE_CLASSIFIED_WORD_FILE = "D:/Userfiles/ndoannguyen/Documents/Python Scripts/VietnameseLanguage/BasicData/SinoVneseClassifiedWords.txt"
+WORD_FILE = "../../BasicData/AllPureVietnameseWords.txt"
+SYLLABLE_FILE = "../../BasicData/AllPureVietnameseSyllables.txt"
+SINO_VNESE_DICTIONARY_FILE = "../../BasicData/AllSinoVietnameseSyllablesWithMeaning.txt"
+SINO_VNESE_CHARACTER_FILE = "../../BasicData/AllSinoVietnameseSyllables.txt"
+SINO_VNESE_CLASSIFIED_WORD_FILE = "../../BasicData/SinoVneseClassifiedWords.txt"
 
 def ask_sinovietnamese_word(word):
 

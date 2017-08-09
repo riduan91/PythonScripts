@@ -58,7 +58,7 @@ LOWER_VLETTER_LIST = LOWER_CONSONANT_VLETTER_LIST + LOWER_VOWEL_VLETTER_LIST
 
 VLETTER_LIST = UPPER_VLETTER_LIST + LOWER_VLETTER_LIST
 
-BASIC_DATA_DIR = "D:/Userfiles/ndoannguyen/Documents/Python Scripts/VietnameseLanguage/BasicData/"
+BASIC_DATA_DIR = "../../BasicData/"
 RAW_WORDS_FILE_NAME = "AllRawWords.txt"
 PURE_VNESE_WORDS_FILE_NAME = "AllPureVietnameseWords.txt"
 PURE_VNESE_SYLLABLES_FILE_NAME = "AllPureVietnameseSyllables.txt"

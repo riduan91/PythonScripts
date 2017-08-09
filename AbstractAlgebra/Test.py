@@ -24,11 +24,11 @@ def process(mymod, actions, outputfile, limit_x=5, limit_y=5):
     limit = [0] * alg.nb_generators
     for i in range(len(limit)):
         if alg.bidegrees[i][0] != 0 and alg.bidegrees[i][1] != 0:
-            limit[i] = 2 * min(abs(limit_x / alg.bidegrees[i][0]) + 1, abs(limit_y / alg.bidegrees[i][1]) + 1)
+            limit[i] = max(abs(limit_x / alg.bidegrees[i][0]) + 1, abs(limit_y / alg.bidegrees[i][1]) + 1)
         elif alg.bidegrees[i][0] != 0:
-            limit[i] = 2 * abs(limit_x / alg.bidegrees[i][0]) + 1
+            limit[i] = abs(limit_x / alg.bidegrees[i][0]) + 1
         elif alg.bidegrees[i][1] != 0:
-            limit[i] = 2 * abs(limit_y / alg.bidegrees[i][1]) + 1
+            limit[i] = abs(limit_y / alg.bidegrees[i][1]) + 1
     
     print "limit", limit
         
@@ -38,11 +38,10 @@ def process(mymod, actions, outputfile, limit_x=5, limit_y=5):
     return writeToTex(mymod, source_bidegrees, actions, limit_x, limit_y, outputfile)
 
 #TEST1
-"""
+
 t0 = time.time()
-myalg = MyBigradedAlgebra(["x", "y", "z", "t"], [(20, 4), (24, 0), (3, 1), (-24, 0)], ["z^3=0"], True)
+myalg = MyBigradedAlgebra(["x", "y", "z", "t"], [(1, 0), (0, 1), (1, 0), (0, 1)], ["z^3=0"], True)
 mymod = MyFreeBigradedModuleOverAlgebra(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'], [(0, 0), (5, 1), (6, 0), (11, 1), (12, 0), (17, 1), (18, 0), (23, 1)], myalg)
 actions = [ "z", "x*z*t" ]
-process(mymod, actions, 'output.tex', 48, 24)
+process(mymod, actions, 'output.tex', 10, 10)
 print "Process takes %.2f seconds" % (time.time() - t0)
-"""

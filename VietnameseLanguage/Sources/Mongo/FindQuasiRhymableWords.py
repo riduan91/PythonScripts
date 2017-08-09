@@ -5,7 +5,7 @@ Created on Fri Jun 23 15:16:33 2017
 @author: ndoannguyen
 """
 
-BASIC_SOURCE_DIR = "D:/Userfiles/ndoannguyen/Documents/Python Scripts/VietnameseLanguage/Sources/Basic/"
+BASIC_SOURCE_DIR = "../Basic/"
 
 import sys
 sys.path.append(BASIC_SOURCE_DIR)
@@ -30,9 +30,9 @@ def findQuasiRhymableWords(word, collection_name, limit = -1):
         quasi_rhymable_rhymes = corresponding_word["quasi_rhymable_rhymes"]
         accent_type = corresponding_word["accent_type"]
         if limit > 0:
-            quasi_rhymable_words_cursor = WordCollection.find({"$and": [{"rhyme": {"$in": quasi_rhymable_rhymes}}, {"accent_type": accent_type}, {"popularity": {"$lt": 1000}} ]}).sort("popularity", -1).limit(limit)
+            quasi_rhymable_words_cursor = WordCollection.find({"$and": [{"rhyme": {"$in": quasi_rhymable_rhymes}}, {"accent_type": accent_type} ]}).sort("popularity", -1).limit(limit)
         else:
-            quasi_rhymable_words_cursor = WordCollection.find({"$and": [{"rhyme": {"$in": quasi_rhymable_rhymes}}, {"accent_type": accent_type}, {"popularity": {"$lt": 1000}} ]}).sort("popularity", -1)
+            quasi_rhymable_words_cursor = WordCollection.find({"$and": [{"rhyme": {"$in": quasi_rhymable_rhymes}}, {"accent_type": accent_type} ]}).sort("popularity", -1)
     except TypeError:
         print "[Error] Word \"%s\" not found in dictionary." % word.getWord()
         return None

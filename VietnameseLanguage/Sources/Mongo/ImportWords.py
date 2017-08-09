@@ -10,7 +10,7 @@ Created on Fri Jun 23 10:59:17 2017
 This import words from frequency file into mongo
 """
 
-BASIC_SOURCE_DIR = "D:/Userfiles/ndoannguyen/Documents/Python Scripts/VietnameseLanguage/Sources/Basic/"
+BASIC_SOURCE_DIR = "../Basic/"
 
 import sys
 sys.path.append(BASIC_SOURCE_DIR)

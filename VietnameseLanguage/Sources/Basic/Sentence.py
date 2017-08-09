@@ -4,7 +4,7 @@ Created on Fri Jun 23 16:57:14 2017
 
 @author: ndoannguyen
 """
-MONGO_SOURCE_DIR = "D:/Userfiles/ndoannguyen/Documents/Python Scripts/VietnameseLanguage/Sources/Mongo/"
+MONGO_SOURCE_DIR = "../Mongo/"
 import sys
 sys.path.append(MONGO_SOURCE_DIR)
 

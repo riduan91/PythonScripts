@@ -8,10 +8,10 @@ Created on Sun Jul 16 00:30:13 2017
 import re, time
 from MakeArticleCorpus import *
 
-DATA_DIR = "D:/Userfiles/ndoannguyen/Documents/Python Scripts/VietnameseLanguage/Corpus/"
+DATA_DIR = "../../Corpus/"
 WORD_FILE = "AllPureVietnameseWords.txt"
 
-BASIC_SOURCE_DIR = "D:/Userfiles/ndoannguyen/Documents/Python Scripts/VietnameseLanguage/Sources/Basic/"
+BASIC_SOURCE_DIR = "../Basic/"
 
 import sys
 sys.path.append(BASIC_SOURCE_DIR)

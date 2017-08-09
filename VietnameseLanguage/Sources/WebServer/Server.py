@@ -5,8 +5,8 @@ import operator
 from flask import Flask, render_template, request
 app = Flask(__name__)
 
-BASIC_SOURCE_DIR = "D:/Userfiles/ndoannguyen/Documents/Python Scripts/VietnameseLanguage/Sources/Basic/"
-MONGO_SOURCE_DIR = "D:/Userfiles/ndoannguyen/Documents/Python Scripts/VietnameseLanguage/Sources/Mongo/"
+BASIC_SOURCE_DIR = "../Basic/"
+MONGO_SOURCE_DIR = "../Mongo/"
 import sys
 sys.path.append(BASIC_SOURCE_DIR)
 sys.path.append(MONGO_SOURCE_DIR)

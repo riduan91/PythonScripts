@@ -20,7 +20,7 @@ from ParseExpression import MyBigradedAlgebra, MyFreeBigradedModuleOverAlgebra
 from Test import process
 import multiprocessing
 
-TIMEOUT = 120
+TIMEOUT = 240
 OPERATIONS = {
                 'simplification': 'Simplification',
                 'addition': 'Addition',

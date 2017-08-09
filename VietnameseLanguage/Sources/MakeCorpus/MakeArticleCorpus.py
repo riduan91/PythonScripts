@@ -8,7 +8,7 @@ Created on Sat Jul 15 18:43:30 2017
 import os, urllib, re
 from bs4 import BeautifulSoup
 
-DATA_DIR = "D:/Userfiles/ndoannguyen/Documents/Python Scripts/VietnameseLanguage/Corpus/"
+DATA_DIR = "../../Corpus/"
 TMP_DIR = "tmp"
 
 CAT_ID = {          "Thời sự":          1001005, 
