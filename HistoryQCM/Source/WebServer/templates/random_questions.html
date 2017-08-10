@@ -13,7 +13,7 @@
             {% for i in result[0] %}
             <h3>Câu {{ i + 1 }}</h3>
             <input style="display: None" name="id_{{i}}" value={{ result[1][i]["_id"] }} >
-            <h4 style="background-color:powderblue; ">{{ result[1][i]["question"] }}</h4>
+            <h4 style="color:black; background-color:powderblue; ">{{ result[1][i]["question"] }}</h4>
 
                 <input name="option_{{i}}" type="radio" value="A">A. {{ result[1][i]["A"] }} <br>
                 <input name="option_{{i}}" type="radio" value="B">B. {{ result[1][i]["B"] }} <br>
