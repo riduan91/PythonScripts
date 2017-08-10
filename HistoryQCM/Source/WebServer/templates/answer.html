@@ -14,7 +14,7 @@
             {% for i in result[0] %}
             <h3>Câu {{ i + 1 }}</h3>
             <input style="display: None" name="id_{{i}}" value={{ result[1][i]["_id"] }} >
-            <p style="background-color:powderblue; ">{{ result[1][i]["question"] }}</p>
+            <h4 style="background-color:powderblue; ">{{ result[1][i]["question"] }}</h4>
 
                 {% for letter in result[5] %}
                     {% if result[2]["option_" + result[6][i]] == letter and result[1][i]["answer"] == letter %}
