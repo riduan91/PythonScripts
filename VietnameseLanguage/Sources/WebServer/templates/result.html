@@ -12,7 +12,7 @@
  
         <form action = "find_rhymable_words" method = "POST">
             <p>Điền từ cần tìm: <input type = "text" name = "myword" value = "{{ result[0]['myword'] }}"/></p>
-            <p>Số lượng từ muốn trả về: <input type = "text" name = "mylimit" value = {{ result[0]['mylimit'] }} /></p>
+            <p>Số lượng từ muốn trả về: <input type = "number" name = "mylimit" value = {{ result[0]['mylimit'] }} /></p>
             <p><input type = "submit" value = "Submit" /></p>
         </form>
 
