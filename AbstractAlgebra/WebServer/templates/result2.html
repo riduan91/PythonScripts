@@ -1,0 +1,63 @@
+<html>
+   <head>
+        <title>Algebra</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href = "{{ url_for('static', filename = 'main.css') }}" />
+        <script type = "text/javascript" src = "{{ url_for('static', filename = 'ChooseOperation.js') }}" ></script>
+   </head>
+   
+   <body>
+        <h1>Bigraded modules and actions</h1>
+
+        <form action = "do_operation" method = "POST">
+            <h2>Please describe your bigraded algebra</h2>
+            <p>All the generators (each of which is a single letter). E.g: x, y, z
+                <input type = "text" name = "alg_generators" value = "{{ result[0]['alg_generators'] }}" />
+            </p>
+            <p>Their bidegree. E.g: (1, 2), (2, 1), (0, 3)
+                <input type = "text" name = "alg_bidegrees" value = "{{ result[0]['alg_bidegrees'] }}"/>
+            </p>
+            
+            <p>The relations (we only deal with relations of kind x^m*y^n*z^p... = 0). E.g: x^3=0,x*y^4=0
+                <input type = "text" name = "alg_relations" value = "{{ result[0]['alg_relations'] }}" />
+            </p>
+
+
+            <h2>Please select the operation</h2>
+            <select style="width: 100%; background-color:powderblue;" id="OperationToChoose" name="chosen_operation" onchange="ChooseOperation();">
+                {% for (k, V) in result[1].items() %}
+                {% if result[0]['chosen_operation'] == V %}
+                <option id="selection_{{k}}" selected="">{{V}}</option>
+                {% else %}
+                <option id="selection_{{k}}">{{V}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+            
+            <br/>
+            <h2>Please fill the input</h2>
+            
+            {% for (k, V) in result[1].items() %}
+            {% if result[0]['chosen_operation'] == V %}
+            <p id='input_{{ k }}' style="display: block">Input for {{ V }}
+            {% else %}
+            <p id='input_{{ k }}' style="display: none">Input for {{ V }}  
+            {% endif %}                   
+            <br/>
+            Elements
+                {% for i in result[2][k] %}
+                <input type = "text" name = "{{ i }}" value = "{{ result[0][i] }}" />
+                {% endfor %}
+            </p>
+            {% endfor %}
+
+            <p><input type = "submit" value = "Submit. It may take time."/>
+            </p>
+        </form>
+
+        <h2>Result</h2>
+            
+        <p style="background-color:powderblue;" >{{ result[3] }}</p>
+    </body>
+</html>
