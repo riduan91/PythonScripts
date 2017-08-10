@@ -61,5 +61,5 @@ def ImportWords(frequency_file_name, word_collection_name):
             print "[Error] Word with id %s already exists." % ("RHY" + str(index).zfill(5))
             index += 1
 
-#ImportWords(BASIC_DATA_DIR + FREQUENCY_OF_WORD_FILE_NAME, 'Words')
-ImportWords(BASIC_DATA_DIR + "Statistics_TruyenKieu.txt", 'WordsInTruyenKieu')
+ImportWords(BASIC_DATA_DIR + FREQUENCY_OF_WORD_FILE_NAME, 'Words')
+#ImportWords(BASIC_DATA_DIR + "Statistics_TruyenKieu.txt", 'WordsInTruyenKieu')
